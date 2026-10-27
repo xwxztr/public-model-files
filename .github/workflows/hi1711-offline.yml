@@ -1,0 +1,72 @@
+name: Publish Hi1711 offline source bundle
+on:
+  push:
+    branches: [hi1711-offline-20261028]
+    paths: [.github/workflows/hi1711-offline.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: hi1711-offline-release
+  cancel-in-progress: false
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      HI1711_WORK: ${{ github.workspace }}/hi1711-work
+      RELEASE_TAG: openubmc-hi1711-offline-755562f42e6d
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install build prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends build-essential git pkg-config python3 python3-venv python3-pip libglib2.0-dev zlib1g-dev libpixman-1-dev libattr1-dev xz-utils perl
+      - name: Fetch pinned sources and every submodule
+        run: python3 packaging/hi1711/prepare_release.py prepare
+      - name: Build exported source without automatic downloads
+        env:
+          QPYTHON: python3
+          QJOBS: '4'
+          QEMU_BUILD_DIR: ${{ github.workspace }}/hi1711-work/build-check
+        run: |
+          set -o pipefail
+          bash "$HI1711_WORK/stage/openubmc-hi1711-offline-755562f42e6d/build-offline.sh" 2>&1 | tee "$HI1711_WORK/build.log"
+      - name: Run openUBMC regression suite
+        run: |
+          set -o pipefail
+          export PATH="$HI1711_WORK/stage/openubmc-hi1711-offline-755562f42e6d/.tools/bin:$PATH"
+          meson test -C "$HI1711_WORK/build-check" --suite openubmc --print-errorlogs 2>&1 | tee "$HI1711_WORK/tests.log"
+          mkdir -p "$HI1711_WORK/dist"
+          {
+            echo 'GitHub Actions build and validation completed successfully.'
+            echo 'Environment: Ubuntu 24.04 x86_64; this is not a SUSE execution claim.'
+            echo 'Pinned upstream: 755562f42e6dcd9b96563c312c054234eb73b957; QEMU 8.2.10.'
+            echo 'All 34 recursive Git submodules and all 7 Meson wrap projects checked.'
+            echo 'Exported source built using --disable-download and --no-index Python wheels.'
+            echo 'Hi1711 board recognized; no real guest firmware has been tested.'
+            echo
+            "$HI1711_WORK/build-check/qemu-system-aarch64" --version
+            "$HI1711_WORK/build-check/qemu-system-aarch64" -machine help | grep -w hi1711
+            "$HI1711_WORK/build-check/qemu-system-aarch64" -openubmc-version
+            echo
+            tail -n 16 "$HI1711_WORK/tests.log"
+          } > "$HI1711_WORK/dist/VALIDATION.txt"
+      - name: Archive and verify every exported file
+        run: python3 packaging/hi1711/prepare_release.py finalize
+      - name: Publish release attachments
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo 'Release already exists; refusing to overwrite attachments.' >&2
+            exit 1
+          fi
+          gh release create "$RELEASE_TAG" "$HI1711_WORK/dist/"* \
+            --target "$GITHUB_SHA" \
+            --title 'Hi1711 openUBMC QEMU — 完整离线源码包' \
+            --notes-file "$HI1711_WORK/release-notes.md" \
+            --latest=false
