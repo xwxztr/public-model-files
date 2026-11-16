@@ -1,0 +1,15 @@
+{
+  "name": "internal-agent-offline-vendor",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Build-machine-only pinned Windows dependencies; no install step inside company",
+  "dependencies": {
+    "@earendil-works/pi-coding-agent": "1.5.2",
+    "@deepseek-ai/dsh": "0.2.2-rc.3"
+  },
+  "overrides": {
+    "@modelcontextprotocol/client": "2.3.0",
+    "fflate": "0.8.3",
+    "undici": "8.12.4"
+  }
+}

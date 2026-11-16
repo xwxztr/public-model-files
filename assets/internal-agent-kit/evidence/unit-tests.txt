@@ -1,0 +1,29 @@
+test_bad_route_and_chunking_denied (test_guard.BridgeTests.test_bad_route_and_chunking_denied) ... ok
+test_foreign_origin_denied (test_guard.BridgeTests.test_foreign_origin_denied) ... ok
+test_mailbox_roundtrip_preserves_sse_and_hides_headers (test_guard.BridgeTests.test_mailbox_roundtrip_preserves_sse_and_hides_headers) ... ok
+test_models_is_local_and_no_mailbox (test_guard.BridgeTests.test_models_is_local_and_no_mailbox) ... ok
+test_unavailable_host_fails_closed (test_guard.BridgeTests.test_unavailable_host_fails_closed) ... ok
+test_generated_configuration_contains_only_loopback_dummy_auth (test_guard.ConfigurationTests.test_generated_configuration_contains_only_loopback_dummy_auth) ... ok
+test_exclusive_write_and_regular_read (test_guard.MailboxTests.test_exclusive_write_and_regular_read) ... ok
+test_hardlink_read_denied (test_guard.MailboxTests.test_hardlink_read_denied) ... ok
+test_symlink_read_and_write_denied (test_guard.MailboxTests.test_symlink_read_and_write_denied) ... skipped 'Windows symlink privilege unavailable; hardlinks tested separately'
+test_accepts_private_networks (test_guard.PolicyTests.test_accepts_private_networks) ... ok
+test_body_caps (test_guard.PolicyTests.test_body_caps) ... ok
+test_default_tls_verifies_peer_and_hostname (test_guard.PolicyTests.test_default_tls_verifies_peer_and_hostname) ... ok
+test_denied_request_never_calls_transport (test_guard.PolicyTests.test_denied_request_never_calls_transport) ... ok
+test_denies_ambiguous_base_urls (test_guard.PolicyTests.test_denies_ambiguous_base_urls) ... ok
+test_denies_non_rfc1918 (test_guard.PolicyTests.test_denies_non_rfc1918) ... ok
+test_duplicate_json_and_nan_rejected (test_guard.PolicyTests.test_duplicate_json_and_nan_rejected) ... ok
+test_exact_route_allowlist (test_guard.PolicyTests.test_exact_route_allowlist) ... ok
+test_functions_allowed_and_responses_custom_allowed (test_guard.PolicyTests.test_functions_allowed_and_responses_custom_allowed) ... ok
+test_injects_store_false_and_filters_fields (test_guard.PolicyTests.test_injects_store_false_and_filters_fields) ... ok
+test_pinned_tls_no_dns_no_proxy (test_guard.PolicyTests.test_pinned_tls_no_dns_no_proxy) ... ok
+test_server_tools_remote_media_and_state_denied (test_guard.PolicyTests.test_server_tools_remote_media_and_state_denied) ... ok
+test_transport_errors_are_redacted (test_guard.PolicyTests.test_transport_errors_are_redacted) ... ok
+test_upstream_error_body_never_forwarded (test_guard.PolicyTests.test_upstream_error_body_never_forwarded) ... ok
+test_upstream_redirect_rejected_and_no_second_request (test_guard.PolicyTests.test_upstream_redirect_rejected_and_no_second_request) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 4.241s
+
+OK (skipped=1)

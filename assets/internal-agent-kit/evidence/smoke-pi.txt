@@ -1,0 +1,3 @@
+INTERNAL_SMOKE_OK
+
+{"agent": "pi", "ok": true, "exit": 0, "requests": [{"path": "/v1/chat/completions", "model": "internal-model", "tools": 3}]}

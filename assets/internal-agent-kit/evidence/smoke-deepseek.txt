@@ -1,0 +1,3 @@
+dsh web: http://127.0.0.1:3080/?token=REDACTED
+
+{"agent": "deepseek", "web_startup": true, "html_http_200": true, "still_running": true}

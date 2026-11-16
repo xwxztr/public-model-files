@@ -1,0 +1,14 @@
+local/
+runtime/
+vendor/
+payload/
+payload-manifest.json
+*.zip
+dist/
+__pycache__/
+*.pyc
+*.log
+.env
+host-config.json
+*.pem
+*.key
